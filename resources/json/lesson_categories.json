@@ -1,0 +1,23 @@
+[
+    {
+        "label": "Music",
+        "icon_filename": "music.png"
+    },
+    {
+        "label": "Make-up",
+        "icon_filename": "make_up.png"
+    },
+    {
+
+        "label": "Art & Craft",
+        "icon_filename": "art_and_craft.png"
+    },
+    {
+        "label": "Photography",
+        "icon_filename": "photography.png"
+    },
+    {
+        "label": "Cooking",
+        "icon_filename": "cooking.png"
+    }
+]

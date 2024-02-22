@@ -1,0 +1,98 @@
+stages:
+  - building
+  - seeding
+  - testing
+  - deploying
+
+image: kszyrvercobrador/laradock:php74
+
+# Variables
+variables:
+  STAGING_DEPLOY_URL: $STAGING_DEPLOY_URL
+  PRODUCTION_DEPLOY_URL: $PRODUCTION_DEPLOY_URL
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_USER: mysql_test_user
+  MYSQL_PASSWORD: mysql_test_password
+  MYSQL_DATABASE: mysql_test_database
+  DB_HOST: mysql
+
+composer:
+  stage: building
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-composer
+    paths:
+      - vendor/
+  script:
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - cp .env.testing .env
+    - php artisan key:generate
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - vendor/
+      - .env
+
+db-seeding:
+  stage: seeding
+  services:
+    - name: mysql:8.0
+      command: ['--default-authentication-plugin=mysql_native_password']
+  dependencies:
+    - composer
+  script:
+    - mysql --version
+    - php artisan migrate:fresh --seed
+    - mysqldump --host="${DB_HOST}" --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" "${MYSQL_DATABASE}" > db.sql
+  artifacts:
+    paths:
+      - storage/logs
+      - db.sql
+    expire_in: 1 days
+    when: always
+
+codestyle:
+  stage: testing
+  dependencies:
+    - composer
+  script:
+    - php -v
+    - ./vendor/bin/phpcs
+
+phpunit:
+  stage: testing
+  services:
+    - name: mysql:8.0
+      command: ['--default-authentication-plugin=mysql_native_password']
+  dependencies:
+    - composer
+    - db-seeding
+  script:
+    - php -v
+    - touch db.sql
+    - mysql --host="${DB_HOST}" --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" "${MYSQL_DATABASE}" < db.sql
+    - ./vendor/bin/phpunit
+  artifacts:
+    paths:
+      - storage/logs
+    expire_in: 1 days
+    when: always
+
+staging:
+  stage: deploying
+  script:
+    - curl $STAGING_DEPLOY_URL
+  environment:
+    name: staging
+  when: manual
+  only:
+    - develop
+
+production:
+  stage: deploying
+  script:
+    - curl $PRODUCTION_DEPLOY_URL
+  environment:
+    name: production
+  when: manual
+  only:
+    - master

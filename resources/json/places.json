@@ -1,0 +1,74 @@
+[
+   {
+        "city": "Brisbane",
+        "state": {
+            "name": "Queensland",
+            "short_name": "Qld"
+        },
+        "country": "Australia"
+   },
+   {
+        "city": "Gold Coast",
+        "state": {
+            "name": "Queensland",
+            "short_name": "Qld"
+        },
+        "country": "Australia"
+    },
+    {
+        "city": "Sydney",
+        "state": {
+            "name": "New South Wales",
+            "short_name": "NSW"
+        },
+        "country": "Australia"
+    },
+    {
+        "city": "Hobart",
+        "state": {
+            "name": "Tasmania",
+            "short_name": "Tas"
+        },
+        "country": "Australia"
+    },
+    {
+        "city": "Launceston",
+        "state": {
+            "name": "Tasmania",
+            "short_name": "Tas"
+        },
+        "country": "Australia"
+    },
+    {
+        "city": "Perth",
+        "state": {
+            "name": "Western Australia",
+            "short_name": "WA"
+        },
+        "country": "Australia"
+    },
+    {
+        "city": "Melbourne",
+        "state": {
+            "name": "Victoria",
+            "short_name": "Vic"
+        },
+        "country": "Australia"
+    },
+    {
+        "city": "Geelong",
+        "state": {
+            "name": "Victoria",
+            "short_name": "Vic"
+        },
+        "country": "Australia"
+    },
+    {
+        "city": "Adelaide",
+        "state": {
+            "name": "South Australia",
+            "short_name": "SA"
+        },
+        "country": "Australia"
+    }
+]
